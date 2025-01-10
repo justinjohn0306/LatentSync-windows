@@ -78,10 +78,10 @@ LatentSync uses the Whisper to convert melspectrogram into audio embeddings, whi
 
 ## 🔧 Setting up the Environment
 
-Install the required packages and download the checkpoints via:
+For Windows users, you can use the provided `Install.bat` file to set up everything automatically. Once the installation is complete, activate the conda environment:
 
 ```bash
-source setup_env.sh
+conda activate latentsync
 ```
 
 If the download is successful, the checkpoints should appear as follows:
@@ -117,10 +117,10 @@ python gradio_app.py
 
 ### 2. Command Line Interface
 
-Run the script for inference, which requires about 6.5 GB GPU memory.
+Run the script for inference using the CLI, which requires about 6.5 GB GPU memory:
 
 ```bash
-./inference.sh
+python -m scripts.inference --unet_config_path "configs/unet/second_stage.yaml" --inference_ckpt_path "checkpoints/latentsync_unet.pt" --video_path "assets/demo1_video.mp4" --audio_path "assets/demo1_audio.wav" --video_out_path "video_out.mp4"
 ```
 
 You can change the parameter `guidance_scale` to 1.5 to improve the lip-sync accuracy.
@@ -146,7 +146,7 @@ Run the script to execute the data processing pipeline:
 
 You can change the parameter `input_dir` in the script to specify the data directory to be processed. The processed data will be saved in the same directory. Each step will generate a new directory to prevent the need to redo the entire pipeline in case the process is interrupted by an unexpected error.
 
-## 🏋️‍♂️ Training U-Net
+## 🏃️‍♂️ Training U-Net
 
 Before training, you must process the data as described above and download all the checkpoints. We released a pretrained SyncNet with 94% accuracy on the VoxCeleb2 dataset for the supervision of U-Net training. Note that this SyncNet is trained on affine transformed videos, so when using or evaluating this SyncNet, you need to perform affine transformation on the video first (the code of affine transformation is included in the data processing pipeline).
 
@@ -158,9 +158,9 @@ If all the preparations are complete, you can train the U-Net with the following
 
 You should change the parameters in U-Net config file to specify the data directory, checkpoint save path, and other training hyperparameters.
 
-## 🏋️‍♂️ Training SyncNet
+## 🏃️‍♂️ Training SyncNet
 
-In case you want to train SyncNet on your own datasets, you can run the following script. The data processing pipeline for SyncNet is the same as U-Net. 
+In case you want to train SyncNet on your own datasets, you can run the following script. The data processing pipeline for SyncNet is the same as U-Net.
 
 ```bash
 ./train_syncnet.sh
